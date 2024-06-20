@@ -2,6 +2,12 @@ let isDrawing = false;
 let points = [];
 let clearButton;
 let headImage;
+let buttonWidth = 90;
+let buttonHeight = 50;
+let buttonY;
+let margin = 20;
+let button1X;
+let button2X;
 
 function preload(){
   headImage= loadImage('PASEK4.png');
@@ -9,6 +15,10 @@ function preload(){
 
 function setup() {
   createCanvas(1920, 1080);
+  
+  buttonY = height / 2 - buttonHeight / 2;
+  button1X = width - 210;
+  button2X = width - 110;
   
   textSize(20);
 
@@ -24,6 +34,8 @@ function draw() {
   background(255);
   image(headImage, 0,0, 1920,220);
 
+  drawButton(button1X, buttonY, buttonWidth, buttonHeight, "Cofnij", '#FFB3B3');
+  drawButton(button2X, buttonY, buttonWidth, buttonHeight, "Dalej", '#E30613');
   strokeWeight(2);
 
   let rectX = width / 2 - 602 / 2;
@@ -59,6 +71,9 @@ function mousePressed() {
   let rectX = width / 2 - 600 / 2;
   let rectY = height / 2 - 100 / 2;
   if (mouseX > rectX && mouseX < rectX + 600 && mouseY > rectY && mouseY < rectY + 100) {
+    if (isMouseOver(button2X, buttonY, buttonWidth, buttonHeight)) {
+    window.open('https://www.wp.pl', '_self');
+  }
     isDrawing = true;
     points.push({ x: mouseX, y: mouseY });
   }
@@ -77,4 +92,25 @@ function mouseReleased() {
 
 function clearDrawing() {
   points = [];
+}
+function drawButton(x, y, w, h, label, baseColor) {
+  let hoverColor = lerpColor(color(baseColor), color(0), 0.2);
+  if (isMouseOver(x, y, w, h)) {
+    fill(hoverColor);
+  } else {
+    fill(baseColor);
+  }
+  noStroke();
+  rect(x, y, w, h);
+  fill(255);
+  textSize(20);
+  textAlign(CENTER, CENTER);
+  text(label, x + w / 2, y + h / 2);
+}
+
+function isMouseOver(x, y, w, h) {
+  return mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h;
+
+
+
 }
